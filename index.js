@@ -74,6 +74,22 @@ server.put('/api/cohorts/:id', async (req, res) => {
     }
 })
 
+// Delete Cohort
+server.delete('/api/cohorts/:id', async (req, res) => {
+    try{
+        const count = await db('cohorts')
+            .where({ id: req.params.id })
+            .del();
+        if (count > 0){
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Cohort not found to delete!'});
+        }
+    } catch(error){
+        res.status(500).json(error);
+    }
+})
+
 const port = 3300;
 server.listen(port, function(){
     console.log(`Server listening on port 3300`);
