@@ -33,7 +33,7 @@ Implement the following endpoints:
 - `[GET] /api/cohorts/:id` This route will return the cohort with the matching `id`. x
 - `[GET] /api/cohorts/:id/students` returns all students for the cohort with the specified `id`.
 - `[PUT] /api/cohorts/:id` This route will update the cohort with the matching `id` using information sent in the body of the request. x
-- `[DELETE] /api/cohorts/:id` This route should delete the specified cohort.
+- `[DELETE] /api/cohorts/:id` This route should delete the specified cohort. x
 
 ## Stretch Problem
 

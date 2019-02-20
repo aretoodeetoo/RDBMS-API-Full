@@ -29,6 +29,16 @@ server.get('/api/cohorts', async (req, res) => {
     }
 });
 
+// Get all Students
+server.get('/api/students', async (req, res) => {
+    try{
+        const students = await db('students');
+        res.status(200).json(students);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+});
+
 // Get cohort by ID
 server.get('/api/cohorts/:id', async (req, res) => {
     try{
@@ -41,6 +51,30 @@ server.get('/api/cohorts/:id', async (req, res) => {
     }
 });
 
+// Get Student by ID
+server.get('/api/students/:id', async (req, res) => {
+    try{
+        const student = await db('students')
+            .where({ id: req.params.id })
+            .first();
+        res.status(200).json(student);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+});
+
+// Gets students for specific cohorts
+server.get('/api/cohorts/:id/students', async (req, res) => {
+    try{
+        const studentList = await db('students')
+            .where({ cohort_id: req.params.id })
+            .first();
+        res.status(200).json(studentList);
+    } catch(error){
+        res.status(500).json(error);
+    }
+})
+
 // Create a Cohort
 server.post('/api/cohorts', async (req, res) => {
     try{
@@ -49,6 +83,19 @@ server.post('/api/cohorts', async (req, res) => {
             .where({ id })
             .first();
         res.status(201).json(cohort);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+});
+
+// Add a Student
+server.post('/api/students', async (req, res) => {
+    try{
+        const [id] = await db('students').insert(req.body);
+        const student = await db('students')
+            .where({ id })
+            .first();
+        res.status(201).json(student);
     } catch(error) {
         res.status(500).json(error);
     }
