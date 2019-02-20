@@ -41,6 +41,19 @@ server.get('/api/cohorts/:id', async (req, res) => {
     }
 });
 
+// Create a Cohort
+server.post('/api/cohorts', async (req, res) => {
+    try{
+        const [id] = await db('cohorts').insert(req.body);
+        const cohort = await db('cohorts')
+            .where({ id })
+            .first();
+        res.status(201).json(cohort);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+})
+
 const port = 3300;
 server.listen(port, function(){
     console.log(`Server listening on port 3300`);
