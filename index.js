@@ -67,10 +67,13 @@ server.get('/api/students/:id', async (req, res) => {
 server.get('/api/cohorts/:id/students', async (req, res) => {
     try{
         const studentList = await db('students')
-            .where({ cohort_id: req.params.id })
-            .first();
-        res.status(200).json(studentList);
-    } catch(error){
+            .where({ cohort_id: req.params.id });
+            if (studentList.length){
+                res.status(200).json(studentList);
+            } else {
+                res.status(404).json({ message: "Could not find students for this cohort"});
+            }
+        } catch(error){
         res.status(500).json(error);
     }
 })
