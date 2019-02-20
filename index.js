@@ -124,6 +124,26 @@ server.put('/api/cohorts/:id', async (req, res) => {
     }
 })
 
+// Update Student By ID
+server.put('/api/students/:id', async (req, res) => {
+    try {
+        const count = await db('students')
+            .where({ id: req.params.id })
+            .update(req.body);
+        
+            if (count > 0){
+                const student = await db('students')
+                    .where({ id: req.params.id })
+                    .first();
+                res.status(200).json(student);
+            } else {
+                res.status(404).json({ message: 'student not found to update!'});
+            }
+    } catch(error) {
+        res.status(500).json(error);
+    }
+})
+
 // Delete Cohort
 server.delete('/api/cohorts/:id', async (req, res) => {
     try{
@@ -134,6 +154,22 @@ server.delete('/api/cohorts/:id', async (req, res) => {
             res.status(204).end();
         } else {
             res.status(404).json({ message: 'Cohort not found to delete!'});
+        }
+    } catch(error){
+        res.status(500).json(error);
+    }
+})
+
+// Delete Student
+server.delete('/api/students/:id', async (req, res) => {
+    try{
+        const count = await db('students')
+            .where({ id: req.params.id })
+            .del();
+        if (count > 0){
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'student not found to delete!'});
         }
     } catch(error){
         res.status(500).json(error);
